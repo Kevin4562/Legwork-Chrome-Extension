@@ -1,0 +1,24 @@
+{
+    "name": "Legwork",
+    "version": "1.0",
+    "description": "Extension for quick research management.",
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+    "browser_action": {
+        "default_popup": "main.html"
+    },
+    "web_accessible_resources": [
+        "style.css",
+        "*.svg"
+    ],
+    "permissions": [
+        "contextMenus",
+        "storage",
+        "unlimitedStorage",
+        "http://*/",
+        "https://*/"
+    ]
+}
