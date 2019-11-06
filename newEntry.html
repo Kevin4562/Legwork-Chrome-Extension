@@ -4,6 +4,7 @@
         <img id="exit-popup" class="icon" src="icons/exit.svg">
     </div>
     <div id="create-options">
+        <img style="visibility: hidden; display: none;" id="image-storage">
         <div style="display: flex; margin-bottom: 15px;">
         <div style="width: 50%; float: left;">
             <p>Choose parent</p>
@@ -16,28 +17,12 @@
             <select id="entry-type">
                 <option value="none">Select Type</option>
                 <option value="custom">+ Add Custom Type</option>
-                <option value="text">Text</option>
-                <option value="image">Image</option>
-                <option value="website">Website</option>
-                <option value="article">Article</option>
-                <option value="video">Video</option>
-                <option value="social media">Social Media</option>
-                <option value="group">Group</option>
-                <option value="person">Person</option>
-                <option value="location">Location</option>
-                <option value="username">Username</option>
-                <option value="email">Email</option>
-                <option value="phone">Phone Number</option>
-                <option value="ip address">IP Address</option>
-                <option value="device">Device</option>
-                <option value="vehicle">Vehicle</option>
-                <option value="misc">Misc</option>
             </select>
         </div>
         </div>
         <div style="margin-bottom: 15px;">
             <p>Enter entry name</p>
-            <input id="entry-name" type="text" placeholder="Entry name"></input>
+            <input id="entry-name" maxlength="25" type="text" placeholder="Entry name"></input>
         </div>
         <div>
             <p>Enter data</p>

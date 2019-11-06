@@ -27,19 +27,20 @@ function setCurrentProject(file) {
 }
 
 var defaultTypes = {
-    "Plain Text": { "icon": "Plain Text", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Image": { "icon": "Image", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Website": { "icon": "Website", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Video": { "icon": "Video", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Social Media": { "name": "Social Media", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Group": { "icon": "Group", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Person": { "icon": "Person", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Location": { "icon": "Location", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Username": { "icon": "Username", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Email": { "icon": "Email", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "IP Address": { "icon": "IP Address", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Device": { "icon": "Device", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Vehicle": { "icon": "Vehicle", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Plain Text": { "index": 1, "icon": "icons/plaintext.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Image": { "index": 2, "icon": "icons/image.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Website": { "index": 3, "icon": "icons/website.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Video": { "index": 4, "icon": "icons/video.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Social Media": { "index": 5, "icons/socialmedia.svg": "Social Media", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Group": { "index": 6, "icon": "icons/group.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Person": { "index": 7, "icon": "icons/person.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Location": { "index": 8, "icon": "icons/location.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Code": { "index": 9, "icon": "icons/code.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Username": { "index": 10, "icon": "icons/username.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Email": { "index": 11, "icon": "icons/email.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "IP Address": { "index": 12, "icon": "icons/ipaddress.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Device": { "index": 13, "icon": "icons/device.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Vehicle": {  "index": 14,"icon": "icons/vehicle.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
 }
 
 function getTypes() {
@@ -60,7 +61,16 @@ function cleanText(text, newline){
     return text.replace(/[']/g, "\\\'").replace(/["]/g, "\\\"");
 }
 
-function injectScripts(dirEntry, tabid, info) {
+async function captureScreen() {
+    return new Promise(resolve => {
+        chrome.tabs.captureVisibleTab(function(screenshotUrl) {
+            resolve(screenshotUrl);
+        });
+    });
+}
+
+async function injectScripts(dirEntry, tabid, info) {
+    var screenshot = await captureScreen();
     dirEntry.getFile("newEntry.html", undefined, function (fileEntry) {
         fileEntry.file(function (file) {
                 var reader = new FileReader();
@@ -73,8 +83,9 @@ function injectScripts(dirEntry, tabid, info) {
                                     var command1 = 'document.getElementById(\'entry-name\').value = \'' + cleanText(info.selectionText.substring(0, 25), false) + '\';';
                                     var command2 = 'document.getElementById(\'entry-data\').value = \'' + cleanText(info.selectionText, false) + '\';';
                                     var command3 = 'document.getElementById(\'exit-popup\').src = \'' + chrome.runtime.getURL("icons/exit.svg") + '\';';
-                                    var command4 = 'finishPopup("Text.html");';
-                                    chrome.tabs.executeScript(tabid, { code: command1 + command2 + command3 + command4 }, function() {
+                                    var command4 = 'document.getElementById(\'image-storage\').src = \'' + cleanText(screenshot, true) + '\';';
+                                    var command5 = 'finishPopup("newEntry.html");';
+                                    chrome.tabs.executeScript(tabid, { code: command1 + command2 + command3 + command4 + command5 }, function() {
                                     
                                     });
                                 });
@@ -108,9 +119,12 @@ chrome.contextMenus.onClicked.addListener(menuItem);
 //[      Message Handler      ]======================================================================
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    console.log(sender.tab ? "Message from:" + sender.tab.url : "Message from the extension");
+    console.log(request.greeting + (sender.tab ? " Message from:" + sender.tab.url : " Message from the extension"));
     if (request.greeting == "add-entry") {
-        createEntry(request.parent, request.type, request.name, request.data).then(sendResponse);
+        createEntry(request.parent, request.type, request.name, request.data, sender.tab ? sender.tab.url : "Manual", request.image).then(sendResponse);
+    }
+    if (request.greeting == "add-project") {
+        createProject(request.name).then(sendResponse);
     }
     if (request.greeting == "delete-file") {
         deleteDir(request.file).then(sendResponse);
@@ -125,10 +139,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         getFile(request.file).then(sendResponse);
     }
     if (request.greeting == "request-preview") {
-        getPreview(requests.file).then(files => {sendResponse(JSON.stringify(files))});
+        getPreview(request.file).then(files => {sendResponse(files)});
     }
     if (request.greeting == "request-types") {
-        getTypes().then(sendResponse);
+        getTypes().then(types => {sendResponse(JSON.stringify(types))});
     }
     if (request.greeting == "set-project") {
         setCurrentProject(request.name);
@@ -148,7 +162,7 @@ function toArray(list) {
 }
 
 function getFileLocation(parent, type, name) {
-    if (parent != "none") {
+    if (parent && parent != "none") {
         var location = parent + "/" + type + "_" + name;
     } else {
         var location = type + "_" + name;
@@ -164,50 +178,61 @@ async function getFileSystem() {
     });
 }
 async function getPreview(file) {
-    var data = await getFile(file + "/data.txt").then(readFile);
+    var file = await getFile(file + "/data.txt");
+    var data = await readFile(file);
     return new Promise(resolve => {
         resolve(data);
     });
 }
-async function createEntry(parent, type, name, data) {
+async function createProject(name) {
+    return await createDir(null, "project", name);
+}
+
+async function createFile(location, data) {
     var fs = await getFileSystem();
-    var dir = await createDir(parent, type, name);
-    console.log("Creating: " + dir.fullPath + "/data.txt");
     return new Promise(resolve => {
-        fs.root.getFile(dir.fullPath + '/data.txt', {create: true, exclusive: true},  function(fileEntry) {
+        fs.root.getFile(location, {create: true, exclusive: true},  function(fileEntry) {
             fileEntry.createWriter(function(fileWriter) {
                 fileWriter.onwriteend = function(e) {
-                    resolve(true);
+                    resolve(location);
                 };
-
                 fileWriter.onerror = function(e) {
                     console.log('Write failed: ' + e.toString());
                     resolve(false);
                 };
-            
                 var blob = new Blob([data], {type: 'text/plain'});
-            
                 fileWriter.write(blob);
                 }, errorHandler);
         }, errorHandler);
     });
 }
 
+async function createEntry(parent, type, name, data, source, image) {
+    var dir = await createDir(parent, type, name);
+    var date = new Date;
+    time = date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear() + " " + date.toLocaleTimeString('en-US')
+    return await createFile(dir.fullPath + '/data.txt', JSON.stringify({"data": data, "source": source, "sourceimage": image, "created": time}));
+}
+
 async function createDir(parent, type, name) {
     var fs = await getFileSystem();
+    console.log("Creating new dir: " + getFileLocation(parent, type, name));
     return new Promise(resolve => {
         fs.root.getDirectory(getFileLocation(parent, type, name), {create: true}, function(dirEntry) {
             resolve(dirEntry);
         }, errorHandler);
     });
 }
-async function readFile(file) {
-    var reader = new FileReader();
+async function readFile(fileEntry) {
     return new Promise(resolve => {
-        reader.onloadend = function(e) {
-            resolve(this.result);
-        };
-        reader.readAsText(file);
+        fileEntry.file(function(file) {
+            var reader = new FileReader();
+            reader.onloadend = function(e) {
+                console.log(this.result);
+                resolve(this.result);
+            };
+            reader.readAsText(file);
+        });
     });
 }
 
@@ -230,7 +255,6 @@ async function getFile(name) {
 
 }
 async function deleteFile(name) {
-    console.log(name);
     var file = await getFile(name);
     console.log(file);
     return new Promise(resolve => {
@@ -243,7 +267,7 @@ async function deleteFile(name) {
 async function deleteDir(name) {
     var dir = await getDir(name);
     return new Promise(resolve => {
-        dir.remove(function() {
+        dir.removeRecursively(function() {
             resolve(true);
         }, errorHandler);
     });

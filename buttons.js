@@ -55,7 +55,7 @@ function createDropdownClick(optionButton) {
     }
     optionButton.parentNode.appendChild(fragment);
     document.getElementById('edit-button').addEventListener('click', function() {
-        
+        editFile(optionButton.parentNode.id);
     });
     document.getElementById('duplicate-button').addEventListener('click', function() {
 
@@ -73,38 +73,48 @@ function fileHeaderClick(fileButton) {
     }
 }
 
-function syncNewEntry(name, type, data, parent) {
-    if (getCurrentProject() != null) {
-        if (parent === "none") {
-            createEntry(getProjectName(), type, name, data); 
-        } else {
-            createEntry(parent, type, name, data);
-        }
-    } else {
-        console.log("Created new project");
-        createDir(null, "project", name);
-    }
-}
-
-function finishPopup(fileName, ...args) {
-    if (fileName === "preview.html") {
-        document.getElementById('title').innerHTML = '<img class="smallicon" src="' + getFileIcon(getFileType(args[0])) + '">' + getFileName(args[0]);
-        openPreview(args[0]);
-    }
-    var exitButton = document.getElementById('exit-popup');
-    exitButton.addEventListener('click', function() {
+async function finishPopup(fileName, ...args) {
+    document.getElementById('exit-popup').addEventListener('click', function() {
         closePopup();
     });
-    var addEntryButton = document.getElementById('add-entry');
-    if (addEntryButton) {
-        addEntryButton.addEventListener('click', function() {
+
+    if (fileName === "preview.html") {
+        var types = await getTypes();
+        document.getElementById('title').innerHTML = '<img class="smallicon" src="' + getFileIcon(types, getFileType(args[0])) + '">' + getFileName(args[0]);
+        openPreview(args[0]);
+    }
+    if (fileName === "newEntry.html") {
+        var types = await getTypes();
+        chrome.runtime.sendMessage({greeting: "request-project"}, function(project) {
+            for (const [key, value] of Object.entries(types).sort(([,a], [,b]) => {return (a.index > b.index) ? 1 : -1})) {
+                addOption(document.getElementById('entry-type'), key);
+            }
+            addOption(document.getElementById('entry-parent'), project)
+            document.getElementById('entry-parent').value = project;
+        });
+
+        document.getElementById('add-entry').addEventListener('click', function() {
             var name = document.getElementById('entry-name').value;
             var type = document.getElementById('entry-type').value;
             var data = document.getElementById('entry-data').value;
             var parent = document.getElementById('entry-parent').value;
+            var image = document.getElementById('image-storage').src;
 
-            if (name.length > 0 && type != "none" && parent != "none") {
-                chrome.runtime.sendMessage({greeting: "add-entry", name: name, type: type, data: data, parent: parent}, function(response) {
+            if (name.length > 1 && type != "none" && parent != "none") {
+                chrome.runtime.sendMessage({greeting: "add-entry", name: name, type: type, data: data, parent: parent, image: image}, function(response) {
+                    if (response) {
+                        closePopup();
+                        refreshList();
+                    }
+                });
+            }
+        });
+    }
+    if (fileName === "newProject.html") {
+        document.getElementById('add-entry').addEventListener('click', function() {
+            var name = document.getElementById('entry-name').value;
+            if (name.length > 1) {
+                chrome.runtime.sendMessage({greeting: "add-project", name: name}, function(response) {
                     if (response) {
                         closePopup();
                         refreshList();

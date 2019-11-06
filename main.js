@@ -6,26 +6,27 @@ function setCurrentProject(name) {
 
 function updateProjectName() {
     chrome.runtime.sendMessage({greeting: "request-project"}, function(response) {
-    if (response == "My Projects") {
-        document.getElementById('back-button').style.display = "none";
-    } else {
-        document.getElementById('back-button').style.display = "block";
-    }
-    document.getElementById('title').innerHTML = response;
-});
+        if (response == "My Projects") {
+            document.getElementById('back-button').style.display = "none";
+            document.getElementById('title').innerHTML = response;
+        } else {
+            document.getElementById('back-button').style.display = "block";
+            document.getElementById('title').innerHTML = "Project: " + getFileName(response);
+        }
+    });
 }
 
-function refreshList() {
+async function refreshList() {
     updateProjectName();
+    var types = await getTypes();
     chrome.runtime.sendMessage({greeting: "request-list"}, function(response) {
         var fragment = document.createDocumentFragment();
         console.log("LIST: " + JSON.parse(response));
-
         JSON.parse(response).forEach(function(entry, i) {
             var element = document.createElement('div');
             element.className = 'file-entry';
             element.id = entry.path;
-            var icon = getFileIcon(getFileType(entry.path));
+            var icon = getFileIcon(types, getFileType(entry.path));
             var img = '<img class="file-icon" src="' + icon + '">';
             var name = '<p class="file-name">' + getFileName(entry.path) + '</p>';
             element.innerHTML = ['<div class="file-header">', img, name, '</div>', '<img class="options-button icon" src="icons/vert.svg">'].join('');
@@ -61,11 +62,34 @@ function toArray(list) {
 }
 
 function openPreview(file) {
-    var fragment = document.createDocumentFragment();
-    var txtArea = document.createElement('div');
-    txtArea.innerHTML = this.result;
-    var previewData = document.querySelector('#preview-data');
-    previewData.appendChild(txtArea);
+    chrome.runtime.sendMessage({greeting: "request-preview", file: file}, function(response) {
+        var previewData = document.querySelector('#preview-data');
+        var entry = JSON.parse(response);
+        var txtArea = document.createElement('p');
+        txtArea.id = "preview-text";
+        txtArea.innerHTML = entry.data;
+        previewData.appendChild(txtArea);
+
+        if (entry.sourceimage) {
+            var sourceimage = document.createElement('img');
+            sourceimage.className = "preview-image";
+            sourceimage.src = entry.sourceimage;
+            previewData.appendChild(sourceimage);
+        }
+
+        var meta = document.createElement('div');
+        meta.id = "meta";
+        meta.innerHTML = ['<div id="preview-source"><p>Source</p><p style="font-size: 9px;">' + entry.created + '</p></div>'];
+        var source = document.createElement('a');
+        if (entry.source != "Manual") {
+            source.href = entry.source;
+            source.target = "_blank";
+        }
+        source.innerHTML = entry.source;
+        meta.appendChild(source);
+        previewData.appendChild(meta);
+
+    });
 }
 
 function addOption(select, value) {
@@ -73,18 +97,6 @@ function addOption(select, value) {
     opt.value = value;
     opt.innerHTML = value;
     select.appendChild(opt);
-}
-
-function loadValues(fileName) {
-    if (fileName = "newEntry") {
-        chrome.runtime.sendMessage({greeting: "request-types"}, function(types) {
-            chrome.runtime.sendMessage({greeting: "request-project"}, function(project) {
-                console.log(types);
-                addOption(document.getElementById('entry-parent'), project)
-                document.getElementById('entry-parent').value = project;
-            });
-        });
-    }
 }
 
 function openPopup(fileName, ...args) {
@@ -95,7 +107,6 @@ function openPopup(fileName, ...args) {
                 var reader = new FileReader();
                 reader.addEventListener("load", function (event) {                                                      
                     document.getElementById('popup').innerHTML = reader.result;
-                    loadValues(fileName);
                     finishPopup(fileName, ...args);
                     document.getElementById('popup').style.visibility = "visible";
                 });
@@ -110,29 +121,22 @@ function closePopup() {
     document.getElementById('popup').style.visibility = "hidden";
 }
 
-function getFileIcon(name) {
-    switch(name) {
-        case "project":
-            return "icons/project.svg";
-        case "article":
-            return "icons/article.svg";
-        case "email":
-            return "icons/email.svg";
-        case "group":
-            return "icons/group.svg";
-        case "location":
-            return "icons/location.svg";
-        case "person":
-            return "icons/person.svg";
-        case "website":
-            return "icons/website.svg";
-        case "video":
-            return "icons/video.svg";
-        case "folder":
-            return "icons/folder.svg";
-        default:
-            return "icons/folder.svg";
+async function getTypes() {
+    return new Promise(resolve => {
+        chrome.runtime.sendMessage({greeting: "request-types"}, function(types) {
+            resolve(JSON.parse(types));
+        });
+    });
+}
+
+function getFileIcon(types, name) {
+    console.log(types);
+    for (const [key, value] of Object.entries(types)) {
+        if (key === name) {
+            return value.icon;
+        }
     }
+    return "icons/project.svg";
 }
 
 window.onload = function() {

@@ -23,6 +23,8 @@
         "storage",
         "unlimitedStorage",
         "http://*/",
-        "https://*/"
+        "https://*/",
+        "tabs",
+        "activeTab"
     ]
 }
