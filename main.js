@@ -29,7 +29,7 @@ async function refreshList() {
             var icon = getFileIcon(types, getFileType(entry.path));
             var img = '<img class="file-icon" src="' + icon + '">';
             var name = '<p class="file-name">' + getFileName(entry.path) + '</p>';
-            element.innerHTML = ['<div class="file-header">', img, name, '</div>', '<img class="options-button icon" src="icons/vert.svg">'].join('');
+            element.innerHTML = ['<div class="file-header">', img, name, '</div>', '<div>', '<img class="copy-button icon" src="icons/copy.svg">', '<img class="options-button icon" src="icons/vert.svg">', '</div>'].join('');
             fragment.appendChild(element);
         });
         var fileList = document.querySelector('#file-list');
@@ -40,6 +40,7 @@ async function refreshList() {
 }
 
 function deleteFile(file) {
+
     chrome.runtime.sendMessage({greeting: "delete-file", file: file}, function(response) {
         refreshList();
     });
@@ -65,18 +66,26 @@ function openPreview(file) {
     chrome.runtime.sendMessage({greeting: "request-preview", file: file}, function(response) {
         var previewData = document.querySelector('#preview-data');
         var entry = JSON.parse(response);
+        console.log(entry);
         var txtArea = document.createElement('p');
         txtArea.id = "preview-text";
+        txtArea.className = "hover-data";
         txtArea.innerHTML = entry.data;
         previewData.appendChild(txtArea);
-
+        if (entry.imageapi) {
+            entry.imageapi.forEach(function(api) {
+                var apiimage = document.createElement('img');
+                apiimage.className = "preview-image hover-data";
+                apiimage.src = api + entry.data;
+                previewData.appendChild(apiimage);
+            });
+        }
         if (entry.sourceimage) {
             var sourceimage = document.createElement('img');
-            sourceimage.className = "preview-image";
+            sourceimage.className = "preview-image hover-data";
             sourceimage.src = entry.sourceimage;
             previewData.appendChild(sourceimage);
         }
-
         var meta = document.createElement('div');
         meta.id = "meta";
         meta.innerHTML = ['<div id="preview-source"><p>Source</p><p style="font-size: 9px;">' + entry.created + '</p></div>'];

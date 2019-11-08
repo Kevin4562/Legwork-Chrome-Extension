@@ -5,14 +5,15 @@ body {
 #my-projects {
     width: 350px;
 }
-.grey-bar {
-    background-color: #f1f1f1;
-    background-color: #f1f1f1;
+.window-bar {
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding-right: 15px;
     padding-left: 15px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    margin-bottom: 2px;
 }
 #title-bar {
     height: 45px;
@@ -31,9 +32,27 @@ body {
     -ms-user-select: none;      /* IE 10+ */
     user-select: none; 
 }
+#toggle-highlight {
+    display: flex;
+    align-items: center;
+}
+#toggle-highlight p {
+    margin: 0;
+    font-size: 10;
+}
+#footer {
+    display: flex;
+    margin-top: 16px;
+    color: #777;
+    align-items: center;
+    justify-content: space-between;
+}
 #footer-bar {
-    height: 35px;
+    height: 30px;
+    background-color: #F1F1F1;
     flex-direction: row-reverse;
+    border-radius: 10px 0px 0px 0px;
+    float: right;
 }
 #popup {
     position: fixed;
@@ -54,12 +73,14 @@ body {
     z-index: 100;
     position: relative;
     max-width: 400px;
+    border-radius: 5px;
 }
 #create-options {
     padding: 10px;
     color: grey;
-    height: 315px;
+    height: 313px;
     overflow-y: auto;
+    background-color: #8080802b;
 }
 #popup p {
     margin: 0px 0px 4px 0px;
@@ -99,16 +120,16 @@ body {
     resize: none;
     border-radius: 3px;
     border-color: lightgray;
-    background: #eceff1;
     box-shadow: none;
     font-family: "Segoe UI", Tahoma, sans-serif;
     padding: 10px 15px;
+    background-color: white;
 }
 #preview-data #preview-text {
-    background-color: aliceblue;
     padding: 15px;
     border-style: solid;
     border-width: 1px;
+    background-color: white;
 }
 #preview-data #meta {
     border-style: dashed;
@@ -127,18 +148,31 @@ body {
     width: 100%;
     object-fit: cover;
     box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#preview-data .hover-data:hover {
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.06), 0 0px 20px 0 rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 .file-header {
     display: flex;
     align-items: center;
-    text-indent: 10px;
     font-size: 13px;
     cursor: pointer;
+}
+.file-name {
+    /* background-color: rgba(238, 130, 238, 0.486); */
+    padding: 1px 10px 1px 10px;
+    border-radius: 10px;
 }
 .file-icon {
     height: 18px;
     width: 18px;
+    filter: invert(.5) sepia(1) saturate(500);
+    opacity: 0.5;
+    margin-right: 10px;
 }
 .file-entry {
     display: flex;
@@ -155,17 +189,24 @@ body {
     opacity: 0.5;
     cursor: pointer;
     width: auto;
+    height: 24px;
     -webkit-user-select: none;  /* Chrome all / Safari all */
     -moz-user-select: none;     /* Firefox all */
     -ms-user-select: none;      /* IE 10+ */
     user-select: none; 
 }
+.copy-button {
+    height: 15px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
 .smallicon {
     opacity: 0.5;
     height: 15px;
     width: 15px;
-    margin-bottom: -3px;
+    margin-bottom: -2px;
     margin-right: 10px;
+    filter: invert(.5) sepia(1) saturate(500);
 }
 .dropdown {
     width: 100px;
@@ -190,4 +231,67 @@ body {
     background-color: cornflowerblue;
 }
 
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    transform: scale(0.8);
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
 

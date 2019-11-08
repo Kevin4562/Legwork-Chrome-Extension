@@ -27,23 +27,23 @@ function setCurrentProject(file) {
 }
 
 var defaultTypes = {
-    "Plain Text": { "index": 1, "icon": "icons/plaintext.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Image": { "index": 2, "icon": "icons/image.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Website": { "index": 3, "icon": "icons/website.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Video": { "index": 4, "icon": "icons/video.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Social Media": { "index": 5, "icons/socialmedia.svg": "Social Media", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Group": { "index": 6, "icon": "icons/group.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Person": { "index": 7, "icon": "icons/person.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Location": { "index": 8, "icon": "icons/location.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Code": { "index": 9, "icon": "icons/code.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Username": { "index": 10, "icon": "icons/username.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Email": { "index": 11, "icon": "icons/email.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "IP Address": { "index": 12, "icon": "icons/ipaddress.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Device": { "index": 13, "icon": "icons/device.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
-    "Vehicle": {  "index": 14,"icon": "icons/vehicle.svg", "save_source_url": true, "save_source_image": true, "save_source_html": true, "json_api": [] },
+    "Plain Text": { "index": 1, "icon": "icons/plaintext.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Image": { "index": 2, "icon": "icons/image.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Website": { "index": 3, "icon": "icons/website.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Video": { "index": 4, "icon": "icons/video.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Social Media": { "index": 5, "icons/socialmedia.svg": "Social Media", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Group": { "index": 6, "icon": "icons/group.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Person": { "index": 7, "icon": "icons/person.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Location": { "index": 8, "icon": "icons/location.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": ["https://external-content.duckduckgo.com/ssv2/?scale=1&lang=en&colorScheme=dark&format=png&size=500x500&center="] },
+    "Code": { "index": 9, "icon": "icons/code.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Username": { "index": 10, "icon": "icons/username.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Email": { "index": 11, "icon": "icons/email.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "IP Address": { "index": 12, "icon": "icons/ipaddress.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Device": { "index": 13, "icon": "icons/device.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
+    "Vehicle": {  "index": 14,"icon": "icons/vehicle.svg", "save_source_url": true, "save_source_image": true, "json_api": [], "image_api": [] },
 }
 
-function getTypes() {
+async function getTypes() {
     return new Promise(resolve => {
         chrome.storage.local.get({'types': defaultTypes}, function(result) {
             resolve(result.types);
@@ -209,9 +209,11 @@ async function createFile(location, data) {
 
 async function createEntry(parent, type, name, data, source, image) {
     var dir = await createDir(parent, type, name);
+    var types = await getTypes();
     var date = new Date;
     time = date.getMonth() + "/" + date.getDay() + "/" + date.getFullYear() + " " + date.toLocaleTimeString('en-US')
-    return await createFile(dir.fullPath + '/data.txt', JSON.stringify({"data": data, "source": source, "sourceimage": image, "created": time}));
+    var info = {"data": data, "source": source, "sourceimage": image, "created": time, "imageapi": types[type].image_api};
+    return await createFile(dir.fullPath + '/data.txt', JSON.stringify(info));
 }
 
 async function createDir(parent, type, name) {
