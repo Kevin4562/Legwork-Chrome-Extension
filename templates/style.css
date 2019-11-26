@@ -2,8 +2,186 @@ body {
     margin: 0;
     height: fit-content;
 }
-#my-projects {
+#legwork-my-projects {
     width: 350px;
+}
+#legwork-title-bar {
+    height: 45px;
+}
+#legwork-title {
+    font-size: 16px;
+    color: #777;
+    margin: 0; 
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: auto;
+    max-width: 250px;
+    overflow-x: hidden;
+}
+#legwork-file-list {
+    height: 400px;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    user-select: none; 
+    overflow-y: auto;
+}
+#legwork-toggle-highlight {
+    display: flex;
+    align-items: center;
+}
+#legwork-toggle-highlight p {
+    margin: 0;
+    font-size: 10;
+}
+#legwork-footer {
+    display: flex;
+    margin-top: 16px;
+    color: #777;
+    align-items: center;
+    justify-content: space-between;
+    flex-flow: row-reverse;
+}
+#legwork-footer-bar {
+    height: 30px;
+    background-color: #F1F1F1;
+    flex-direction: row-reverse;
+    border-radius: 10px 0px 0px 0px;
+    float: right;
+}
+#legwork-popup {
+    position: fixed;
+    visibility: hidden;
+    background-color: rgb(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    transition: visibility 0s, opacity 0.5s linear;
+    z-index: 100000000;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+#legwork-create-popup {
+    background: white;
+    width: 95%;
+    height: 360px;
+    margin: auto;
+    margin-top: 50px;
+    z-index: 100;
+    position: relative;
+    max-width: 400px;
+    border-radius: 5px;
+}
+#legwork-create-options {
+    padding: 10px;
+    color: grey;
+    height: 313px;
+    overflow-y: auto;
+    background-color: #8080802b;
+    box-sizing: content-box;
+}
+#legwork-popup p {
+    margin: 0px 0px 4px 0px;
+    font-size: 12px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+#legwork-data-input {
+    width: 100%;
+}
+#legwork-popup button {
+    padding: 6px 15px 6px 15px;
+    margin: 4px;
+    background-color: cornflowerblue;
+    color: white;
+    border: 0;
+    border-radius: 2px;
+    font: 400 13.3333px Arial;
+    box-shadow: none;
+    min-height: 0;
+    cursor: pointer;
+}
+#legwork-popup select {
+    border-color: lightgray;
+    padding: 10px;
+    border-radius: 3px;
+    width: 95%;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: 14px;
+    color: black;
+    box-sizing: border-box;
+    box-shadow: none;
+}
+#legwork-popup input {
+    padding: 10px 20px 10px 20px;
+    font: 400 16px Arial;
+    border-radius: 3px;
+    border: 1px solid lightgray;
+    width: -webkit-fill-available;
+    box-shadow: none;
+    box-sizing: border-box;
+    box-shadow: none;
+}
+#legwork-popup #legwork-images-button {
+    background-color: #ffffff;
+    color: black;
+    font-size: 10;
+    border: lightgray;
+    border-width: 1px;
+    border-style: dashed;
+    margin-left: 0;
+}
+#legwork-popup textarea {
+    width: -webkit-fill-available;
+    height: 90px;
+    resize: none;
+    border-radius: 3px;
+    border-color: lightgray;
+    box-shadow: none;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    padding: 10px 15px;
+    background-color: white;
+    box-sizing: border-box;
+    font: 400 13.3333px Arial;
+    color: black;
+}
+#legwork-preview-data #legwork-preview-main {
+    padding: 15px 15px 0px 15px;
+    background-color: white;
+    height: 80px;
+    overflow-y: auto;
+}
+#legwork-preview-data #legwork-preview-options {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    height: 20px;
+    background-color: white;
+    padding: 5px 15px 0px 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+#legwork-search-bar {
+    width: 80%;
+    text-indent: 15px;
+    border: none;
+    height: 25px;
+    border-radius: 5px;
+}
+#legwork-search-div {
+    background-color: #ff8080;
+    border-bottom: 1px #00000033 solid;
+    padding: 5px;
+    box-shadow: inset 0 0 4px #0000007d;
+}
+#legwork-preview-data #legwork-meta {
+    border-style: dashed;
+    border-width: 1px;
+    box-sizing: border-box;
+    margin-right: auto;
+    margin-left: auto;
+    width: 95%;
+    padding: 5px;
+    word-break: break-all;
+    margin-bottom: 5px;
+}
+#legwork-preview-data #legwork-preview-source {
+    display: flex;
+    justify-content: space-between;
 }
 .window-bar {
     background-color: white;
@@ -15,135 +193,9 @@ body {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     margin-bottom: 2px;
 }
-#title-bar {
-    height: 45px;
-}
-#title {
-    font-size: 16px;
-    color: #777;
-    margin: 0;
-    /* width: -webkit-fill-available; */ 
-    font-family: "Segoe UI", Tahoma, sans-serif;
-}
-#file-list {
-    height: 400px;
-    -webkit-user-select: none;  /* Chrome all / Safari all */
-    -moz-user-select: none;     /* Firefox all */
-    -ms-user-select: none;      /* IE 10+ */
-    user-select: none; 
-}
-#toggle-highlight {
-    display: flex;
-    align-items: center;
-}
-#toggle-highlight p {
-    margin: 0;
-    font-size: 10;
-}
-#footer {
-    display: flex;
-    margin-top: 16px;
-    color: #777;
-    align-items: center;
-    justify-content: space-between;
-}
-#footer-bar {
-    height: 30px;
-    background-color: #F1F1F1;
-    flex-direction: row-reverse;
-    border-radius: 10px 0px 0px 0px;
-    float: right;
-}
-#popup {
-    position: fixed;
-    visibility: hidden;
-    background-color: rgb(0, 0, 0, 0.6);
-    width: 100%;
-    height: 100%;
-    transition: visibility 0s, opacity 0.5s linear;
-    z-index: 100000000;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-}
-#create-popup {
-    background: white;
-    width: 95%;
-    height: 360px;
-    margin: auto;
-    margin-top: 50px;
-    z-index: 100;
-    position: relative;
-    max-width: 400px;
-    border-radius: 5px;
-}
-#create-options {
-    padding: 10px;
-    color: grey;
-    height: 313px;
-    overflow-y: auto;
-    background-color: #8080802b;
-}
-#popup p {
-    margin: 0px 0px 4px 0px;
-    font-size: 12px;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-}
-#data-input {
-    width: 100%;
-}
-#popup button {
-    padding: 6px 15px 6px 15px;
-    margin: 4px;
-    background-color: cornflowerblue;
-    color: white;
-    border: 0;
-    border-radius: 2px;
-}
-#popup select {
-    border-color: lightgray;
-    padding: 10px;
-    border-radius: 3px;
-    width: 95%;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-}
-#popup input {
-    padding: 10px 20px 10px 20px;
-    font-size: 16px;
-    border-radius: 3px;
-    border: 1px solid lightgray;
-    width: -webkit-fill-available;
-    box-shadow: none;
-    box-sizing: border-box;
-}
-#popup textarea {
-    width: -webkit-fill-available;
-    height: 90px;
-    resize: none;
-    border-radius: 3px;
-    border-color: lightgray;
-    box-shadow: none;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-    padding: 10px 15px;
-    background-color: white;
-}
-#preview-data #preview-text {
-    padding: 15px;
-    border-style: solid;
-    border-width: 1px;
-    background-color: white;
-}
-#preview-data #meta {
-    border-style: dashed;
-    border-width: 1px;
-    box-sizing: border-box;
-    margin-top: 10px;
-    padding: 5px;
-    word-break: break-all;
-}
-#preview-data #preview-source {
-    display: flex;
-    justify-content: space-between;
-}
-#preview-data .preview-image {
+
+
+#legwork-preview-data .preview-image {
     height: 150px;
     width: 100%;
     object-fit: cover;
@@ -151,30 +203,53 @@ body {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
-#preview-data .hover-data:hover {
+#legwork-preview-data #legwork-preview-images {
+    padding: 20px;
+    min-height: 115px;
+}
+#legwork-preview-data .hover-data:hover {
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.06), 0 0px 20px 0 rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
-.file-header {
+#legwork-create-new {
+    background-color: #8fbc8f82;
+    justify-content: center;
+}
+#legwork-extension .file-header {
     display: flex;
     align-items: center;
     font-size: 13px;
     cursor: pointer;
 }
-.file-name {
+#legwork-extension .file-name {
     /* background-color: rgba(238, 130, 238, 0.486); */
     padding: 1px 10px 1px 10px;
     border-radius: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: auto;
+    max-width: 200px;
+    overflow-x: hidden;
 }
-.file-icon {
-    height: 18px;
-    width: 18px;
+#legwork-extension .file-icon {
+    height: 15px;
+    width: 15px;
     filter: invert(.5) sepia(1) saturate(500);
     opacity: 0.5;
-    margin-right: 10px;
 }
-.file-entry {
+
+#legwork-extension .file-left {
+    display: flex;
+    align-items: center;
+}
+#legwork-extension .open-list {
+    filter: none;
+    height: 8px;
+    width: 8px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+#legwork-extension .file-entry {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -182,10 +257,16 @@ body {
     padding-right: 10px;
     padding-left: 10px;
 }
-.file-entry:hover {
+#legwork-extension #legwork-create-new:hover {
+    background-color: #8fbc8fbd;
+}
+#legwork-extension .file-entry:hover {
     background-color: aliceblue;
 }
-.icon {
+#legwork-extension #legwork-search-button {
+    height: 14px;
+}
+#legwork-extension .icon {
     opacity: 0.5;
     cursor: pointer;
     width: auto;
@@ -195,12 +276,18 @@ body {
     -ms-user-select: none;      /* IE 10+ */
     user-select: none; 
 }
-.copy-button {
+#legwork-extension .legwork-controls {
+    width: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#legwork-extension .copy-button {
     height: 15px;
     margin-bottom: 5px;
     margin-right: 5px;
 }
-.smallicon {
+#legwork-extension .smallicon {
     opacity: 0.5;
     height: 15px;
     width: 15px;
@@ -208,47 +295,48 @@ body {
     margin-right: 10px;
     filter: invert(.5) sepia(1) saturate(500);
 }
-.dropdown {
+#legwork-extension .dropdown {
     width: 100px;
-    height: 100px;
+    /* height: 100px; */
     background-color: white;
-    position: absolute;
+    position: relative;
     right: 0;
     -webkit-box-shadow: 2px 2px 19px -6px rgba(0,0,0,0.75);
     -moz-box-shadow: 2px 2px 19px -6px rgba(0,0,0,0.75);
     box-shadow: 2px 2px 19px -6px rgba(0,0,0,0.75);
     z-index: 10;
     border-radius: 5px;
-    margin-top: 30;
+    margin-top: 70;
 }
-.menu-option {
+#legwork-preview {
+    color: grey;
+    height: 333px;
+    overflow-y: auto;
+    background-color: #9dc2da2b;
+    box-sizing: content-box;
+}
+#legwork-extension .menu-option {
     text-align: center;
     font-size: 16px;
     cursor: pointer;
     padding: 5px 0px 5px 0px;
 }
-.menu-option:hover {
+#legwork-extension .menu-option:hover {
     background-color: cornflowerblue;
 }
-
-
-.switch {
+#legwork-extension .switch {
     position: relative;
     display: inline-block;
     width: 50px;
     height: 24px;
     transform: scale(0.8);
   }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
+#legwork-extension .switch input {
     opacity: 0;
     width: 0;
     height: 0;
   }
-  
-  /* The slider */
-  .slider {
+#legwork-extension  .slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -258,9 +346,8 @@ body {
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+}
+#legwork-extension .slider:before {
     position: absolute;
     content: "";
     height: 16px;
@@ -270,28 +357,36 @@ body {
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
+}
+#legwork-extension input:checked + .slider {
     background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
+}
+#legwork-extension input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
+}
+#legwork-extension input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+}
+#legwork-extension .slider.round {
     border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+#legwork-extension .slider.round:before {
     border-radius: 50%;
-  }
+}
+#legwork-extension ::-webkit-scrollbar {
+    width: 5px;
+}
+#legwork-extension ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+#legwork-extension ::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+#legwork-extension ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+
 

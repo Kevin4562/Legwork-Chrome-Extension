@@ -4,18 +4,24 @@
     "description": "Extension for quick research management.",
     "manifest_version": 2,
     "background": {
-        "scripts": ["background.js"],
+        "scripts": ["background/background.js", "background/fileHandler.js", "background/projectManager.js"],
         "persistent": true
     },
     "browser_action": {
-        "default_popup": "main.html"
+        "default_popup": "templates/main.html"
     },
+    "content_scripts": [
+        {
+          "matches": ["<all_urls>"],
+          "js": ["thirdparty/mark.es6.min.js", "contentscripts/contentScript.js"]
+        }
+      ],
     "options_ui": {
-        "page": "options.html",
+        "page": "templates/options.html",
         "open_in_tab": true
     },
     "web_accessible_resources": [
-        "style.css",
+        "templates/style.css",
         "*.svg"
     ],
     "permissions": [

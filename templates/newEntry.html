@@ -1,0 +1,37 @@
+<div id="legwork-extension">
+<div id="legwork-create-popup">
+    <div style="height: 25px;" class="window-bar">
+        <h3 id="legwork-title">Add new entry: </h3>
+        <img id="legwork-exit-popup" class="icon" src="/icons/exit.svg">
+    </div>
+    <div id="legwork-create-options">
+        <img style="visibility: hidden; display: none;" id="legwork-image-storage">
+        <div style="display: flex; margin-bottom: 15px;">
+        <div style="width: 50%; float: left;">
+            <p>Choose parent</p>
+            <select id="legwork-entry-parent"></select>
+        </div>
+        <div style="width: 50%; float: right;">
+            <p>Select entry type</p>
+            <select id="legwork-entry-type">
+                <option value="none">Select Type</option>
+            </select>
+        </div>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <p>Enter entry name</p>
+            <input id="legwork-entry-name" maxlength="25" type="text" placeholder="Entry name"></input>
+        </div>
+        <div>
+            <p>Enter data</p>
+            <textarea id="legwork-entry-data" type="textarea"></textarea>
+        </div>
+        <button id="legwork-images-button">+ Add Images</button>
+        <input type='file' accept="image/*" id="legwork-getFile" style="display:none" multiple>
+        <div style="float: right">
+            <button id="legwork-cancel-entry">Cancel</button>
+            <button id="legwork-add-entry">Add</button>
+        </div>
+    </div>
+</div>
+</div>
